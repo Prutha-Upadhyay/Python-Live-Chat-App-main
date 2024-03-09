@@ -1,0 +1,21 @@
+{% extends "base.html" %}{% block content %}
+
+
+<form action="/join-room" method="post">
+    <label for="name">Enter your name:</label><br>
+    <input type="text" id="name" name="name" required><br><br>
+    <label for="room_id">Enter room ID:</label><br>
+    <input type="text" id="room_id" name="room_id" required><br><br>
+    <label for="password">Enter password:</label><br>
+    <input type="password" id="password" name="password" required><br><br>
+    <button type="submit">Join Room</button>
+</form>
+{% if error %}
+    <p>{{ error }}</p>
+{% endif %}
+
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+
+{% endblock %} 

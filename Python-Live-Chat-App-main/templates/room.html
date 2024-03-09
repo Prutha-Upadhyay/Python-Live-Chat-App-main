@@ -1,0 +1,128 @@
+{% extends 'base.html' %} {% block content %}
+<div class="message-box">
+  <h2>Chat Room: {{ room_name }}</h2>
+  <div class="messages" id="messages">
+    {% for msg in messages %}
+    <div class="text">
+      <span> <strong>{{ msg.sender_name }}</strong>: {{ msg.message }} </span>
+      <span class="muted">{{ msg.timestamp }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="inputs">
+    <input
+      type="text"
+      rows="3"
+      placeholder="Message"
+      name="message"
+      id="message"
+    />
+    <button type="button" name="send" id="send-btn">Send</button>
+    <div class="emoji-dropdown" id="emoji-dropdown">
+      <button class="emoji-btn" onclick="toggleEmojiDropdown()">😀</button>
+      <div class="emoji-content" id="emoji-content">
+        <button onclick="insertEmoji('😀')">😀</button>
+    <button onclick="insertEmoji('😃')">😃</button>
+    <button onclick="insertEmoji('😄')">😄</button>
+    <button onclick="insertEmoji('😁')">😁</button>
+    <button onclick="insertEmoji('😆')">😆</button>
+    <button onclick="insertEmoji('😅')">😅</button>
+    <button onclick="insertEmoji('🤣')">🤣</button>
+    <button onclick="insertEmoji('😂')">😂</button>
+    <button onclick="insertEmoji('😊')">😊</button>
+    <button onclick="insertEmoji('😇')">😇</button>
+    <button onclick="insertEmoji('😍')">😍</button>
+    <button onclick="insertEmoji('🥰')">🥰</button>
+    <button onclick="insertEmoji('😘')">😘</button>
+    <button onclick="insertEmoji('😋')">😋</button>
+    <button onclick="insertEmoji('😎')">😎</button>
+    <button onclick="insertEmoji('🤓')">🤓</button>
+    <button onclick="insertEmoji('😜')">😜</button>
+    <button onclick="insertEmoji('😝')">😝</button>
+    <button onclick="insertEmoji('😛')">😛</button>
+    <button onclick="insertEmoji('🤪')">🤪</button>
+    <button onclick="insertEmoji('❤️')">❤️</button> <!-- Heart emoji -->
+    <button onclick="insertEmoji('🙏')">🙏</button> <!-- Namaste emoji -->
+    <!-- Add more buttons for other emojis -->
+      </div>
+    </div>
+  </div>
+  <style>
+    .emoji-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.emoji-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 100px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px;
+  z-index: 1;
+}
+
+.emoji-content button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+  </style>
+  <script type="text/javascript">
+
+    
+    function toggleEmojiDropdown() {
+  var emojiContent = document.getElementById("emoji-content");
+  if (emojiContent.style.display === "none") {
+    emojiContent.style.display = "block";
+  } else {
+    emojiContent.style.display = "none";
+  }
+}
+
+function insertEmoji(emoji) {
+  var messageInput = document.getElementById("message");
+  messageInput.value += emoji;
+}
+
+
+    var socket = io();
+
+    socket.on("connect", function () {
+      console.log("Connected to server");
+    });
+
+    socket.on("message", function (data) {
+      console.log("Received message:", data);
+      appendMessage(data);
+    });
+
+    document.getElementById("send-btn").addEventListener("click", function () {
+      sendMessage();
+    });
+
+    function sendMessage() {
+      var messageInput = document.getElementById("message");
+      var message = messageInput.value.trim();
+      if (message) {
+        socket.emit("message", { data: message });
+        messageInput.value = "";
+      }
+    }
+
+    function appendMessage(data) {
+      var messagesContainer = document.getElementById("messages");
+      var messageDiv = document.createElement("div");
+      messageDiv.classList.add("text");
+      var messageContent = `
+      <span><strong>${data.name}</strong>: ${data.message}</span>
+      <span class="muted">${new Date().toLocaleString()}</span>
+    `;
+      messageDiv.innerHTML = messageContent;
+      messagesContainer.appendChild(messageDiv);
+    }
+  </script>
+  {% endblock %}
+</div>

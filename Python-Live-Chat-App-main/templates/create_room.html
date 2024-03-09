@@ -1,0 +1,45 @@
+
+{% extends "base.html" %}{% block content %}
+
+
+    <form action="/create-room" method="post">
+        <label for="name">Enter your name:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="room_name">Enter room name:</label><br>
+        <input type="text" id="room_name" name="room_name" required><br><br>
+        <label for="password">Enter password:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+        <span id="password-validation"></span><br><br> 
+        <button type="submit">Create Room</button>
+    </form>
+    <script>
+        const passwordInput = document.getElementById('password');
+        const passwordValidation = document.getElementById('password-validation');
+        const submitButton = document.getElementById('submit-btn');
+    
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+    
+            // Password validation criteria
+            const lengthValid = password.length >= 8;
+            const uppercaseValid = /[A-Z]/.test(password);
+            const lowercaseValid = /[a-z]/.test(password);
+            const specialCharValid = /[!@#$%^&*()_+{}[\]:;.,<>/]/.test(password);
+    
+            // Display validation message based on criteria
+            if (lengthValid && uppercaseValid && lowercaseValid && specialCharValid) {
+                passwordValidation.textContent = 'Password is valid';
+                passwordValidation.style.color = 'green';
+                submitButton.disabled = false; // Enable button if password is valid
+            } else {
+                passwordValidation.textContent = 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one special character';
+                passwordValidation.style.color = 'red';
+                submitButton.disabled = true; // Disable button if password is invalid
+            }
+        });
+    </script>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+
+{% endblock %} 
