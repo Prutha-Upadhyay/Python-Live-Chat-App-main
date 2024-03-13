@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 <div class="message-box">
-  <h2>Chat Room: {{ room_name }}</h2>
+  <h2>Chat Room: {{ room_name }} {{ code }}</h2>
   <div class="messages" id="messages">
     {% for msg in messages %}
     <div class="text">
@@ -17,6 +17,7 @@
       name="message"
       id="message"
     />
+    <ul id="mention-list"></ul>
     <button type="button" name="send" id="send-btn">Send</button>
     <div class="emoji-dropdown" id="emoji-dropdown">
       <button class="emoji-btn" onclick="toggleEmojiDropdown()">😀</button>

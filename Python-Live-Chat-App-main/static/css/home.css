@@ -5,8 +5,9 @@ body {
     /* Center the background image */
     
     padding: 20px;
-    font-family: Arial, sans-serif;
+    /* font-family: Arial, sans-serif; */
 }
+
 
 #c1 {
     background-color:hsl(205, 77%, 38%,0.6); /* Light gray background color */

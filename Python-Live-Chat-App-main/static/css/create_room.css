@@ -1,0 +1,90 @@
+body {
+    /* background-color: #f5f5f5; */
+    background-image: url("gradient_1.jpg");
+    background-size: cover;
+    /* Center the background image */
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.create-room-form {
+    width: 300px;
+    margin: 50px auto;
+    padding: 20px;
+    /* border: 1px solid #ccc; */
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    text-align: center;
+    color: #f9f9f9;
+}
+#c2 {
+    background-color:hsla(256, 68%, 63%, 0.5); /* Light gray background color */
+    padding: 30px; /* Add padding to create space around the content */
+    border-radius: 10px; /* Add rounded corners */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+    text-align: center; /* Center align text */
+    margin: 30px 100px 100px  400px; /* Add some marg*/
+    width: 600px;
+    height: 700px;
+    color: #bc75ff;
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+    /* font-variation-settings:
+    "slnt" 0; */
+    font-size: 20px;/* Larger font size for the heading */
+    margin-bottom: 20px; 
+}
+
+#create-room-form label {
+    /* font-weight: bold; */
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    
+}
+#create-room-form input[type="text"],
+#create-room-form input[type="password"] {
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 15px;
+    text-align: center;
+    color: black;
+}
+
+#create-room-form button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 19px;
+    font-weight: bold;
+    border: 3px solid #C7BCE6; /* Add a solid border to the button */
+    color: #c29fe3; 
+    background-color: hsl(326, 24%, 68%,0.4);
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for background color change */
+}
+
+#create-room-form button:hover {
+    
+    background-color: #846B9C; /* Change background color on hover */
+    color: #fff; /* Change text color on hover */
+    border: 2px solid #846B9C;
+}
+
+#create-room-form span {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+}
+#he1{
+    
+}

@@ -267,6 +267,7 @@
 
 
 from datetime import datetime
+import re
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_socketio import join_room, leave_room, send, SocketIO
 from flask_sqlalchemy import SQLAlchemy
@@ -280,6 +281,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///chatrooms.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 socketio = SocketIO(app)
+
 
 
 class ChatRoom(db.Model):
@@ -304,6 +306,14 @@ class Message(db.Model):
 
 with app.app_context():
     db.create_all()
+    # Check if there are existing rooms in the database
+    if ChatRoom.query.count() == 0:
+        # If no rooms exist, initialize the room ID counter to 1
+        room_id_counter = 1
+    else:
+        # If rooms exist, find the maximum room ID and set the counter to 1 more than that
+        max_room_id = ChatRoom.query.order_by(ChatRoom.room_id.desc()).first().room_id
+        room_id_counter = int(max_room_id) + 1
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -324,6 +334,7 @@ def home():
 
 @app.route("/create-room", methods=["GET", "POST"])
 def create_room():
+    global room_id_counter
     error = None
     if request.method == "POST":
         name = request.form.get("name")
@@ -333,12 +344,22 @@ def create_room():
         if not name or not room_name or not password:
             error = "Please fill out all fields."
         else:
-            room_id = random.randint(100, 999999) 
-            chatroom = ChatRoom(name=room_name, room_id=room_id, password=password)
+            # room_id = random.randint(100, 999999) 
+            # chatroom = ChatRoom(name=room_name, room_id=room_id, password=password)
+            # db.session.add(chatroom)
+            # db.session.commit()
+            # session["room"] = chatroom.room_id
+            # session["name"] = name
+            # return redirect(url_for("room"))
+
+            chatroom = ChatRoom(name=room_name, room_id=room_id_counter, password=password)
             db.session.add(chatroom)
             db.session.commit()
             session["room"] = chatroom.room_id
             session["name"] = name
+            session["room_name"] = chatroom.name
+            # Increment the room ID counter for the next room
+            room_id_counter += 1
             return redirect(url_for("room"))
 
     return render_template("create_room.html", error=error)
