@@ -1,21 +1,60 @@
-{% extends "base.html" %}{% block content %}
 
 
-<form action="/join-room" method="post">
-    <label for="name">Enter your name:</label><br>
-    <input type="text" id="name" name="name" required><br><br>
-    <label for="room_id">Enter room ID:</label><br>
-    <input type="text" id="room_id" name="room_id" required><br><br>
-    <label for="password">Enter password:</label><br>
-    <input type="password" id="password" name="password" required><br><br>
-    <button type="submit">Join Room</button>
-</form>
-{% if error %}
-    <p>{{ error }}</p>
-{% endif %}
-
-    {% if error %}
-        <p>{{ error }}</p>
-    {% endif %}
-
-{% endblock %} 
+{% extends "base.html" %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join Chat Room</title>
+    <!-- Link to your CSS file -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/join_room.css') }}"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3s4Wz6iJgD/+ub2oU"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="c2">
+        <h1 id="he1">Join a chat room</h1>
+        <form action="/join-room" method="post" id="join-room-form">
+            <label for="name">Enter your name</label><br>
+            <input type="text" id="name" name="name" required><br><br>
+            <label for="room_id">Enter room ID</label><br>
+            <input type="text" id="room_id" name="room_id" required><br><br>
+            <label for="password">Enter password</label><br>
+            <input type="password" id="password" name="password" required><br><br>
+            <button type="submit">Join Room</button>
+            {% if error %}
+                <p>{{ error }}</p>
+            {% endif %}
+        </form>
+        <script>
+            // Clear error message when the page is loaded
+            window.onload = function() {
+                const errorMessage = document.getElementById("error-message");
+                if (errorMessage) {
+                    errorMessage.style.display = "none";
+                }
+            };
+        </script>
+        
+  </body>
+</html>
+{% endblock %}

@@ -384,7 +384,6 @@ def join_chatroom():
                 session["name"] = name
                 session["room_name"] = chatroom.name
                 return redirect(url_for("room"))
-
     return render_template("join_room.html", error=error)
 
 @app.route("/room")

@@ -79,11 +79,11 @@
         } else {
           passwordValidation.textContent =
             "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one special character";
-          passwordValidation.style.color = "red";
+          passwordValidation.style.color = "#F51721";
+          passwordValidation.style.fontSize = "15px";
           createRoomForm.classList.add("was-validated");
         }
       });
-
       createRoomForm.addEventListener("submit", function (event) {
         // Prevent form submission if password is invalid
         if (!passwordValidation.textContent.includes("valid")) {
@@ -97,6 +97,7 @@
     {% if error %}
     <p>{{ error }}</p>
     {% endif %}
+    
   </body>
 </html>
 {% endblock %}
