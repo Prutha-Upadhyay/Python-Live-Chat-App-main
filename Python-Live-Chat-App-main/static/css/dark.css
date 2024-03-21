@@ -1,0 +1,41 @@
+body.dark-mode {
+    background-image: url(black-plain-concrete-textured.jpg);
+    color: #fff;
+  }
+  .dark-mode .title, .dark-mode .code {
+    /* background-color: #212121; */
+    color: #D4F1F4;
+  }
+
+  .dark-mode .message.sender {
+    /* background-color: #212121; */
+    color: #212121;
+  }
+
+  .dark-mode .message.receiver {
+    /* background-color: #333; */
+    color: #212121;
+  }
+
+  .dark-mode .timestamp {
+    color: #2c2929;
+  }
+
+  .dark-mode .system-text {
+    background-color: #D4F1F4;
+    color: #121212;
+  }
+
+  .dark-mode .emoji-content {
+    background-color: #D4F1F4;
+    color: black;
+  }
+
+  /* Theme toggle icon */
+  #theme-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+    z-index: 1000;
+  }

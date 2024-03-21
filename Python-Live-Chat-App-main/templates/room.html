@@ -6,17 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join Chat Room</title>
     <!-- Link to your CSS file -->
-    <!-- <link
+    <link
       rel="stylesheet"
       type="text/css"
       href="{{ url_for('static', filename='css/room.css') }}"
-    /> -->
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='css/dark.css') }}"
+    />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3s4Wz6iJgD/+ub2oU"
       crossorigin="anonymous"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -27,7 +37,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
       rel="stylesheet"
     />
-    <style>
+    <!-- <style>
       .emoji-dropdown {
         position: relative;
         display: inline-block;
@@ -107,28 +117,41 @@
         border: none;
         cursor: pointer;
       }
-    </style>
+    </style> -->
   </head>
   <body>
     <div class="chat-container">
       <div class="chat-room">
-        <h2>Chat Room: {{ room_name }}</h2>
+        <h2 class="title">Chat Room: {{ room_name }}</h2>
+        <p class="code">Chat room Code : {{ code }}</p>
+        <div class="center-date" id="center-date"></div>
+
         <div class="messages" id="messages">
-          {% for msg in messages %} {% if msg.sender_name == session.name %}
+          <!-- {% set prev_date = None %} -->
+          {% for msg in messages %}
+          <!-- {% if msg.date != prev_date %}
+            <div class="chat-date" id="chat-date-{{ loop.index }}">{{ msg.date }}</div>
+            {% set prev_date = msg.date %}
+        {% endif %} -->
+
+          <div class="chat-date" id="chat-date">{{ msg.date }}</div>
+
+          {% if msg.sender_name == session.name %}
+
           <div class="message sender">
-            <span style="background-color: #dcf8c6;
-            align-self: flex-end;">{{ msg.message }}</span>
-            <span class="timestamp">{{ msg.timestamp }}</span>
+            <span
+              >{{ msg.message }}
+              <span class="timestamp">{{ msg.time.strftime('%I:%M') }}</span>
+            </span>
           </div>
           {% else %}
           <div class="message receiver">
             <span
-               style="background-color: #ece5dd;;
-               align-self: flex-start;"><strong>{{ msg.sender_name }}</strong>: {{ msg.message }}</span
-            >
-            <span class="timestamp">{{ msg.timestamp }}</span>
+              ><strong>{{ msg.sender_name }}</strong>: {{ msg.message }}
+              <span class="timestamp">{{ msg.time.strftime('%I:%M') }}</span>
+            </span>
           </div>
-          {% endif %} {% endfor %}
+          {% endif %}{% endfor %}
         </div>
         <div class="input-box">
           <input
@@ -138,7 +161,7 @@
           />
           <div class="emoji-dropdown" id="emoji-dropdown">
             <button class="emoji-btn" onclick="toggleEmojiDropdown()">
-              😀
+              &#x1F604;
             </button>
             <div class="emoji-content" id="emoji-content">
               <button onclick="insertEmoji('😀')">😀</button>
@@ -165,23 +188,66 @@
               <button onclick="insertEmoji('🙏')">🙏</button>
             </div>
           </div>
-          <button type="button" name="send" id="send-btn">Send</button>
+          <button type="button" name="send" id="send-btn">
+            <i class="fas fa-paper-plane"></i>
+          </button>
         </div>
       </div>
     </div>
+    <div id="theme-toggle">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </div>
     <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function () {
+        var prevDate = null;
+        var chatDates = document.querySelectorAll(".chat-date");
+        chatDates.forEach(function (dateElement) {
+          var currentDate = dateElement.textContent;
+          if (currentDate !== prevDate) {
+            dateElement.style.display = "inline-block";
+            prevDate = currentDate;
+          } else {
+            dateElement.style.display = "none";
+          }
+        });
+      });
       function toggleEmojiDropdown() {
         var emojiContent = document.getElementById("emoji-content");
         if (emojiContent.style.display === "none") {
           emojiContent.style.display = "block";
+          scrollToEmojiDropdown();
         } else {
           emojiContent.style.display = "none";
         }
       }
-
+      function scrollToEmojiDropdown() {
+        var emojiDropdown = document.getElementById("emoji-dropdown");
+        emojiDropdown.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
       function insertEmoji(emoji) {
         var messageInput = document.getElementById("message-input");
         messageInput.value += emoji;
+        messageInput.focus();
       }
 
       var socket = io();
@@ -200,7 +266,15 @@
         .addEventListener("click", function () {
           sendMessage();
         });
-
+      document
+        .getElementById("message-input")
+        .addEventListener("keydown", function (event) {
+          if (event.keyCode === 13) {
+            // Check if Enter key is pressed
+            event.preventDefault(); // Prevent the default behavior (submitting the form)
+            sendMessage(); // Call the sendMessage function
+          }
+        });
       function sendMessage() {
         var messageInput = document.getElementById("message-input");
         var message = messageInput.value.trim();
@@ -210,25 +284,152 @@
         }
       }
 
+      // function appendMessage(data) {
+      //   var messagesContainer = document.getElementById("messages");
+      //   var messageDiv = document.createElement("div");
+      //   messageDiv.classList.add("text");
+
+      //   // Add sender or receiver class based on the message sender
+      // if (data.sender_name === "{{ session.name }}") {
+      //   messageDiv.classList.add("sender");
+      // } else {
+      //   messageDiv.classList.add("receiver");
+      // }
+
+      //   var messageContent = `
+      //     <span><strong>${data.name}</strong>: ${data.message}</span>
+      //     <span class="muted">${new Date().toLocaleString()}</span>
+      //   `;
+      //   messageDiv.innerHTML = messageContent;
+      //   messagesContainer.appendChild(messageDiv);
+      // }
+      // Assuming you have a variable sessionName passed from the backend
+      var sessionName = "{{ session_name }}";
+
       function appendMessage(data) {
+        console.log("Received data:", data); // Log the received data object
         var messagesContainer = document.getElementById("messages");
         var messageDiv = document.createElement("div");
-        messageDiv.classList.add("text");
+        messageDiv.classList.add("message");
 
-        // Add sender or receiver class based on the message sender
-      if (data.sender_name === "{{ session.name }}") {
-        messageDiv.classList.add("sender");
-      } else {
-        messageDiv.classList.add("receiver");
-      }
-
-        var messageContent = `
-          <span><strong>${data.name}</strong>: ${data.message}</span>
-          <span class="muted">${new Date().toLocaleString()}</span>
+        // Check if the message sender is the current user
+        var isCurrentUser = data.name === sessionName;
+        console.log("Sender name : ", isCurrentUser);
+        // Apply different classes based on whether the message is from the current user or not
+        //       if (isCurrentUser) {
+        //         messageDiv.classList.add("sender");
+        //         var messageContent = `
+        //   <span> ${data.message}</span>
+        //   <span class="timestamp">${data.timestamp}</span>
+        // `;
+        //       } else {
+        //         messageDiv.classList.add("receiver");
+        //         var messageContent = `
+        //   <span><strong>${data.name}</strong>: ${data.message}</span>
+        //   <span class="timestamp">${data.timestamp}</span>
+        // `;
+        //       }
+        console.log("System", data.system);
+        if (data.system) {
+          var currentDate = new Date().toLocaleDateString("en-US");
+          var parts = currentDate.split("/");
+          var formattedDate =
+            parts[2] +
+            "-" +
+            (parts[0].length === 1 ? "0" + parts[0] : parts[0]) +
+            "-" +
+            (parts[1].length === 1 ? "0" + parts[1] : parts[1]);
+          // Construct system message content
+          var messageContent = `
+          <div>
+            <span class="system-date">${formattedDate}</span><br>
+            <span class="system-text"><strong>${data.name} </strong><strong>${data.message}</strong></span>
+          </div>
+           
         `;
+        } else {
+          // Check if the message sender is the current user
+          var isCurrentUser = data.name === sessionName;
+
+          // Apply different classes based on whether the message is from the current user or not
+          if (isCurrentUser) {
+            messageDiv.classList.add("sender");
+            var messageTime = new Date().toLocaleTimeString("en-US", {
+              hour12: false,
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+            var messageContent = `
+              <div class= "message-db"> 
+                <span>${data.message}
+                <span class="timestamp">${messageTime}</span></span>
+                </div>
+            `;
+          } else {
+            messageDiv.classList.add("receiver");
+            var messageTime = new Date().toLocaleTimeString("en-US", {
+              hour12: false,
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+            var messageContent = `
+                <span><strong>${data.name}</strong>: ${data.message}</span>
+                <span class="timestamp">${messageTime}</span>
+            `;
+          }
+        }
+
+        //       // Construct message content
+        //       var messageContent = `
+        //   <span><strong>${data.name}</strong>: ${data.message}</span>
+        //   <span class="timestamp">${data.timestamp}</span>
+        // `;
+
+        // Set message content
         messageDiv.innerHTML = messageContent;
+
         messagesContainer.appendChild(messageDiv);
+
+        // Scroll to the bottom of the messages container
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
       }
+
+      function displayTodayDate() {
+        var today = new Date();
+        var formattedDate = today.toLocaleDateString("en-IN", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        });
+        document.getElementById("center-date").textContent = formattedDate;
+      }
+      function toggleDarkMode() {
+        const body = document.querySelector("body");
+        body.classList.toggle("dark-mode");
+        const isDarkMode = body.classList.contains("dark-mode");
+        localStorage.setItem("dark-mode", isDarkMode);
+      }
+
+      // Function to load the theme based on the user's preference
+      function loadTheme() {
+        const isDarkMode = localStorage.getItem("dark-mode") === "true";
+        if (isDarkMode) {
+          document.querySelector("body").classList.add("dark-mode");
+        }
+      }
+
+      // Event listener for theme toggle
+      document
+        .getElementById("theme-toggle")
+        .addEventListener("click", toggleDarkMode);
+
+      // Load the theme when the page loads
+      document.addEventListener("DOMContentLoaded", loadTheme);
+
+      // Call the function to display today's date when the page loads
+      // window.onload = function () {
+      //   displayTodayDate();
+      // };
     </script>
   </body>
 </html>

@@ -266,14 +266,14 @@
 #     socketio.run(app, debug=True)
 
 
-from datetime import datetime
+from datetime import datetime,date,timedelta
 import re
 from flask import Flask, render_template, request, session, redirect, url_for
-from flask_socketio import join_room, leave_room, send, SocketIO
+from flask_socketio import emit, join_room, leave_room, send, SocketIO
 from flask_sqlalchemy import SQLAlchemy
-
+from sqlalchemy import func
 import random
-import string
+import pytz
 
 app = Flask(__name__)
 app.secret_key = "hjhjsdahhds"
@@ -293,16 +293,65 @@ class ChatRoom(db.Model):
     def __repr__(self):
         return f"ChatRoom(name={self.name}, room_id={self.room_id})"
 
+# class Message(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     room_id = db.Column(db.String(10), nullable=False)
+#     sender_name = db.Column(db.String(50), nullable=False)
+#     message = db.Column(db.String(500), nullable=False)
+
+#     timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)  # Add this line
+#     def __repr__(self):
+#         return f"Message(room_id={self.room_id}, sender_name={self.sender_name}, message={self.message})"
+
+
+indian_timezone = pytz.timezone('Asia/Kolkata')
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     room_id = db.Column(db.String(10), nullable=False)
     sender_name = db.Column(db.String(50), nullable=False)
     message = db.Column(db.String(500), nullable=False)
 
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)  # Add this line
+    timestamp = db.Column(db.DateTime, nullable=False)
+    date = db.Column(db.Date)
+    time = db.Column(db.Time)
 
     def __repr__(self):
         return f"Message(room_id={self.room_id}, sender_name={self.sender_name}, message={self.message})"
+    
+
+
+# Listen for before_insert event to extract date and time before inserting into the database
+# @db.event.listens_for(Message, 'before_insert')
+# def before_insert_listener(mapper, connection, target):
+#     if target.timestamp is not None:
+#         target.date = target.timestamp.date()
+#         target.time = target.timestamp.time()
+#     else:
+#         # Set default values for date and time or handle it based on your application's logic
+#         # Here, we'll set them to the current date and time
+#         target.date = datetime.utcnow().date()
+#         target.time = datetime.utcnow().time()
+    
+
+
+# Listen for before_insert event to extract date and time before inserting into the database
+@db.event.listens_for(Message, 'before_insert')
+def before_insert_listener(mapper, connection, target):
+    indian_time = datetime.now(indian_timezone)
+    target.timestamp = indian_time
+
+    if target.timestamp is not None:
+        # Convert the timestamp to Indian time zone
+        indian_time = target.timestamp.astimezone(indian_timezone)
+        target.date = indian_time.date()
+        target.time = indian_time.time()
+    else:
+        # Set default values for date and time or handle it based on your application's logic
+        # Here, we'll set them to the current date and time in Indian time zone
+        indian_time = datetime.now(indian_timezone)
+        target.date = indian_time.date()
+        target.time = indian_time.time()
+
 
 with app.app_context():
     db.create_all()
@@ -386,16 +435,22 @@ def join_chatroom():
                 return redirect(url_for("room"))
     return render_template("join_room.html", error=error)
 
+
 @app.route("/room")
 def room():
+    # session_name = session.get('name')
     room_id = session.get("room")
     name = session.get("name")
     room_name = session.get("room_name")
+
     if not room_id or not name:
         return redirect(url_for("home"))
+    
+    room = Message.query.filter_by(id=room_id).first()
+    date = room.date if room else None
 
     messages = Message.query.filter_by(room_id=room_id).all()
-    return render_template("room.html", code=room_id, messages=messages,room_name=room_name)
+    return render_template("room.html", code=room_id,session_name=name, messages=messages,room_name=room_name,date=date)
 
 
 @socketio.on("message")
@@ -417,10 +472,10 @@ def connect():
     name = session.get("name")
     if not room_id or not name:
         return
-
+    # emit('message', {'message': f'{name} has entered the room', 'system': True}, room=room)
     join_room(room_id)
     session["name"] = name
-    send({"name": name, "message": "has entered the room"}, to=room_id)
+    send({"name": name, "message": "has entered the room",'system': True}, to=room_id)
 
 
 @socketio.on("disconnect")
@@ -429,7 +484,7 @@ def disconnect():
     name = session.get("name")
     if room_id:
         leave_room(room_id)
-        send({"name": name, "message": "has left the room"}, to=room_id)
+        send({"name": name, "message": "has left the room",'system': True}, to=room_id)
 
 
 if __name__ == "__main__":
