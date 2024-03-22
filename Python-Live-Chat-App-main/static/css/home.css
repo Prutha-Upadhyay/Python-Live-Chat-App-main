@@ -1,62 +1,62 @@
 body {
-    /* background-color: #f5f5f5; */
-    background-image: url("rob-hampson-cqFKhqv6Ong-unsplash.jpg");
-    background-size: cover;
-    /* Center the background image */
-    
-    padding: 20px;
-    /* font-family: Arial, sans-serif; */
+  /* background-color: #f5f5f5; */
+  background-image: url("3d-render-talk-chat-bubbles-comment-app-icon1.jpg");
+  background-size: cover;
+  /* Center the background image */
+  background-attachment: fixed;
+  padding: 20px;
+  /* font-family: Arial, sans-serif; */
 }
 
-
 #c1 {
-    background-color:hsl(205, 77%, 38%,0.6); /* Light gray background color */
-    padding: 30px; /* Add padding to create space around the content */
-    border-radius: 10px; /* Add rounded corners */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
-    text-align: center; /* Center align text */
-    margin: 100px 100px 100px  400px; /* Add some marg*/
-    width: 600px;
-    height: 400px;
+  /* background-color:hsl(205, 77%, 38%,0.6);  */
+  background-color: hsl(196, 80%, 80%, 0.9);
+  padding: 30px; /* Add padding to create space around the content */
+  border-radius: 10px; /* Add rounded corners */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+  text-align: center; /* Center align text */
+  margin: 100px 100px 100px 400px; /* Add some marg*/
+  width: 600px;
+  height: 400px;
 }
 
 #c1 h1 {
-    font-family: "Inter", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: bold;
-    font-style: normal;
-    /* font-variation-settings:
+  font-family: "Mali", cursive;
+  font-weight: 700;
+  font-style: normal;
+  font-style: normal;
+  /* font-variation-settings:
     "slnt" 0; */
-    color: #ef81bf; /* Dark text color */
-    font-size: 2.5rem; /* Larger font size for the heading */
-    margin-bottom: 20px; /* Add margin below the heading */
+  /* color: #ef81bf;  */
+  color: #416bb9;
+  font-size: 2.5rem; /* Larger font size for the heading */
+  margin-bottom: 20px; /* Add margin below the heading */
 }
 
 #c1 p {
-    font-family: "Inter", sans-serif;
-    font-optical-sizing: auto;
-    font-style: normal;
-    color: #b4afaf; /* Slightly darker text color */
-    font-size: 1.2rem; /* Medium font size for the paragraph */
-    margin-bottom: 20px; /* Add margin below the paragraph */
+  font-family: "Mali", cursive;
+  font-weight: 500;
+  font-style: normal;
+  color: #686262; /* Slightly darker text color */
+  font-size: 1.2rem; /* Medium font size for the paragraph */
+  margin-bottom: 20px; /* Add margin below the paragraph */
 }
 
 #c1 button {
-    font-family: "Inter", sans-serif;
-    font-optical-sizing: auto;
-    font-style: normal;
-    border: 3px solid #C29BB1; /* Add a solid border to the button */
-    color: #C29BB1; 
-    background-color: hsl(326, 24%, 68%,0.2);
-    padding: 12px 24px; /* Add padding to the button */
-    font-size: 1rem; /* Medium font size for the button text */
-    cursor: pointer; /* Change cursor to pointer on hover */
-    transition: background-color 0.3s ease; /* Smooth transition for background color change */
+  font-family: "Mali", cursive;
+  font-weight: 600;
+  font-style: normal;
+  border: 3px solid #63B4F8; /* Add a solid border to the button */
+  color: #279DF5;
+  background-color: hsla(327, 68%, 67%, 0.3);
+  padding: 12px 24px; /* Add padding to the button */
+  font-size: 1rem; /* Medium font size for the button text */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  transition: background-color 0.3s ease; /* Smooth transition for background color change */
 }
 
 #c1 button:hover {
-    background-color: #4A9DD9; /* Change background color on hover */
-    color: #fff; /* Change text color on hover */
-    border: 2px solid #4A9DD9;
+  background-color: #4a9dd9; /* Change background color on hover */
+  color: #fff; /* Change text color on hover */
+  border: 2px solid #4a9dd9;
 }
-

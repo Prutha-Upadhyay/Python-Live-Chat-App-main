@@ -172,13 +172,31 @@ body{
 
 .message.sender {
   text-align: right;
+  /* max-width: 50%; */
 }
 
 .message.receiver {
   text-align: left;
+  max-width: 50%;
 }
 
-.message.sender span,
+.message.sender span{
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  /* padding: 30px; */
+  display: inline-block;
+  background-color: #dcf8c6; /* Sender background color */
+  padding: 8px 12px;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  font-size: 18px;
+  word-wrap: break-word;
+  max-width: 50%;
+}
+
+
 .message.receiver span {
   font-family: "Poppins", sans-serif;
   font-style: normal;
@@ -191,6 +209,7 @@ body{
   border-radius: 10px;
   margin-bottom: 5px;
   font-size: 18px;
+  /* max-width: 50%; */
 }
 
 .message.sender .timestamp,
