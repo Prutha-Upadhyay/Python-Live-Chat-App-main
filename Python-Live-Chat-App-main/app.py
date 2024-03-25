@@ -369,6 +369,7 @@ with app.app_context():
 def home():
     session.clear()
     error = None
+
     chatrooms = ChatRoom.query.all()
     action = request.args.get("action")
 
@@ -377,7 +378,7 @@ def home():
     elif action == "join":
         return redirect(url_for("join_chatroom"))
 
-    return render_template("home.html", error=error, chatrooms=chatrooms)
+    return render_template("index.html", error=error, chatrooms=chatrooms)
 
 
 
@@ -444,7 +445,7 @@ def room():
     room_name = session.get("room_name")
 
     if not room_id or not name:
-        return redirect(url_for("home"))
+        return redirect(url_for("index"))
     
     room = Message.query.filter_by(id=room_id).first()
     date = room.date if room else None
