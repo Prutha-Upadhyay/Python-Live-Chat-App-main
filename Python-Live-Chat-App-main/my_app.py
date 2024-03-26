@@ -275,6 +275,7 @@ from sqlalchemy import func
 import random
 import pytz
 
+
 app = Flask(__name__)
 app.secret_key = "hjhjsdahhds"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///chatrooms.db"
